@@ -8,12 +8,11 @@ let optionsList = document.querySelector("#options-list")
 let questionNumber = 1;
 let count = 0
 let correct = 0
-let highScores = []
 let done = false
 
 // Generate timer vairable and set the time available
 const timeElement = document.querySelector(".timer");
-let secondsLeft = 5
+let secondsLeft = 60
 timeElement.textContent = secondsLeft + " seconds";
 
 // An array of objects detailing the questions, options, and answers
@@ -43,10 +42,6 @@ function startQuiz() {
   questionGeneration()
   buttonDiv.innerHTML = ""
   checkAnswer()
-  // if (done === false){
-  //   finish()
-  // }
-  // showHighScore()
 }
 
 // This function starts the timer counting down
@@ -126,7 +121,6 @@ function finish(){
   let form = document.createElement("form");
   let type = document.createElement("input");
   const submitBtn = document.createElement("input");
-  let score = {}
 
   submitBtn.setAttribute("type", "submit");
   submitBtn.setAttribute("value", "Submit");
@@ -141,26 +135,30 @@ function finish(){
   optionsList.innerHTML = ""
   numberField.textContent= `You got ${correct}/3 correct. Congraguations!`;
   questionField.textContent = "Please enter your initials"
-
-  submitBtn.addEventListener("click", function(event){
-    let initialField = document.querySelector("#initials").value;
-    score = {initialField: correct}
-  })
-
-  showHighScore(score)
+  submitBtn.addEventListener("click", submitScore)
+  
 }
 
-//Function to list the high scores
-function showHighScore(score){
-  console.log(score)
-  var leaderBoard = JSON.parse(localStorage.getItem("highScores"));
-  leaderBoard.push(score)
-  var stringBoard = JSON.stringify(leaderBoard)
-  localStorage.setItem(stringBoard);
-
+function submitScore(){
+  let score = []
+  let initialField = document.querySelector("#initials").value;
+  score = [{name: initialField, score: correct}]
   
-  //Store as a string
-  //Parse and display
+  var leaderBoard = JSON.parse(localStorage.getItem("highScores"));
+  if (leaderBoard === null){
+    leaderBoard = []
+  }
+
+  leaderBoard.push(score)
+  localStorage.setItem("highScores", JSON.stringify(leaderBoard));
+  
+  showHighScore(leaderBoard)
+}
+
+
+//Function to list the high scores
+function showHighScore(leaderBoard){
+
 }
 
 
