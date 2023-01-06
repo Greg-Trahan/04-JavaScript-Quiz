@@ -1,0 +1,52 @@
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+main{
+  text-align: center;
+}
+
+main h1{
+  font-size: 30px;
+}
+
+#instructions{
+  font-size: 20px;
+  padding: 20px 200px 20px 200px;
+}
+
+.start-button{
+  text-align: center;
+  padding: 20px;
+  display: hidden;
+}
+
+ul{
+  padding-left: 30%;
+}
+
+ul li{
+  text-align: left;
+  padding: 5px;
+  gap: 5x;
+}
+
+@media screen and (max-width:900px){
+  #instructions{
+    font-size: 20px;
+    padding: 20px 100px 20px 100px;
+  }
+}
+
+@media screen and (max-width:600px){
+  #instructions{
+    font-size: 20px;
+    padding: 20px 50px 20px 50px;
+  }
+}
