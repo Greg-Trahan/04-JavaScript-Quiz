@@ -7,10 +7,13 @@ let optionsField = document.querySelector("#options");
 let optionsList = document.querySelector("#options-list")
 let questionNumber = 1;
 let count = 0
+let correct = 0
+let highScores = []
+let done = false
 
 // Generate timer vairable and set the time available
 const timeElement = document.querySelector(".timer");
-let secondsLeft = 60
+let secondsLeft = 5
 timeElement.textContent = secondsLeft + " seconds";
 
 // An array of objects detailing the questions, options, and answers
@@ -20,10 +23,10 @@ const questionArray = [
     options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
     answer: "Bulbasaur" },
   
-    {
-    question: "What is the last Pokemon in the Kanto Pokedex?", 
-    options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
-    answer: "Mew" },
+  {
+  question: "What is the last Pokemon in the Kanto Pokedex?", 
+  options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
+  answer: "Mew" },
 
   {
     question: "Which pokemon can learn the move fly?", 
@@ -38,7 +41,12 @@ generateBtn.addEventListener("click", startQuiz);
 function startQuiz() {
   timer()
   questionGeneration()
-  //Open first question at question 1
+  buttonDiv.innerHTML = ""
+  checkAnswer()
+  // if (done === false){
+  //   finish()
+  // }
+  // showHighScore()
 }
 
 // This function starts the timer counting down
@@ -48,22 +56,20 @@ function timer(){
     secondsLeft--;
     timeElement.textContent = secondsLeft + " seconds remaining";
     
-    if(secondsLeft < 0) {
+    if(secondsLeft < 1) {
       clearInterval(countdown);
-      //When timer hits 0 take to to scorepage
+      if (done === false){
+        finish()
+      }
     }
-
   }, 1000);
 }
 
 //This will display each new questions and the answers
 function questionGeneration(questionNumber){
-  console.log(count)
-  console.log(questionArray.length)
   if (count+1 <= questionArray.length){
-
     //Clear previous elements
-    buttonDiv.innerHTML = ""
+
     optionsList.innerHTML = ""
 
     numberField.textContent= `Question #${count+1}`;
@@ -81,7 +87,6 @@ function questionGeneration(questionNumber){
       optionsList.appendChild(li);
     })
 
-    checkAnswer()
   } else {
     finish()
   }
@@ -102,6 +107,7 @@ function checkAnswer(){
 // This funciton will run if the user gets a question right
 function rightAnswer(){
   count++
+  correct++
   buttonDiv.textContent = "Correct!"
   questionGeneration()
 }
@@ -115,21 +121,44 @@ function wrongAnswer(){
 }
 
 function finish(){
+  done = true
   buttonDiv.innerHTML = ""
-  optionsList.innerHTML = ""
+  let form = document.createElement("form");
+  let type = document.createElement("input");
+  const submitBtn = document.createElement("input");
+  let score = {}
 
-  numberField.textContent= `You got ${count+1}/10 correct`;
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.setAttribute("value", "Submit");
+  // form.setAttribute("style", "padding: 5px")
+  type.setAttribute("id", "initials")
+  type.setAttribute("type", "text");
+
+  form.appendChild(type);
+  optionsField.appendChild(form);
+  form.appendChild(submitBtn);
+
+  optionsList.innerHTML = ""
+  numberField.textContent= `You got ${correct}/3 correct. Congraguations!`;
   questionField.textContent = "Please enter your initials"
+
+  submitBtn.addEventListener("click", function(event){
+    let initialField = document.querySelector("#initials").value;
+    score = {initialField: correct}
+  })
+
+  showHighScore(score)
 }
 
 //Function to list the high scores
-function showHighScore(){
-  scores = [
-    {name: "Gary", score: 50},
-    {name: "Gary", score: 50},
-    {name: "Gary", score: 50},
-    {name: "Gary", score: 50}
-  ]
+function showHighScore(score){
+  console.log(score)
+  var leaderBoard = JSON.parse(localStorage.getItem("highScores"));
+  leaderBoard.push(score)
+  var stringBoard = JSON.stringify(leaderBoard)
+  localStorage.setItem(stringBoard);
+
+  
   //Store as a string
   //Parse and display
 }
