@@ -19,25 +19,35 @@ var leaderBoard = []
 
 // Generate timer vairable and set the time available
 const timeElement = document.querySelector(".timer");
-let secondsLeft = 5
+let secondsLeft = 60
 timeElement.textContent = secondsLeft + " seconds";
 
 // An array of objects detailing the questions, options, and answers
 const questionArray = [
   {
-    question: "What is the first Pokemon in the Kanto Pokedex?", 
-    options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
-    answer: "Bulbasaur" },
+    question: "Commonly used data types do NOT inclue:", 
+    options: ["strings", "booleans", "alerts", "numbers"], 
+    answer: "alerts" },
   
   {
-  question: "What is the last Pokemon in the Kanto Pokedex?", 
-  options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
-  answer: "Mew" },
+  question: "The condition in an if/else statement is enclosed with ______.", 
+  options: ["quotes", "curley brackets", "parenthesis", "square brackets"], 
+  answer: "parenthesis" },
 
   {
-    question: "Which pokemon can learn the move Fly?", 
-    options: ["Pikachu", "Bulbasaur", "Mew", "Vulpix"], 
-    answer: "Mew" }
+    question: "Arrays in JavaScript can be used to store _______.", 
+    options: ["numbers and strings", "other arrays", "booleans", "all of the above"], 
+    answer: "all of the above" },
+  
+  {
+    question: "String values must be enclosed winthin _____ when being assigned to variables.", 
+    options: ["commas", "curley brackets", "quotes", "parenthasis"], 
+    answer: "quotes" },
+
+  {
+    question: "A very useful tool used during development and debuggin for printing content tot eh debugger is:", 
+    options: ["JavaScript", "termainal", "for loops", "console log"], 
+    answer: "console log" }
 ]
 
 //When on the main page you can either start the quiz, or view the high score page
@@ -84,6 +94,7 @@ function questionGeneration(questionNumber){
       let button = document.createElement("button");
 
       button.setAttribute("response", questionArray[count].options[idx]);
+      button.setAttribute("class", "answer")
       button.textContent = questionArray[count].options[idx];
 
       li.appendChild(button);
@@ -134,6 +145,7 @@ function finish(){
   //Create submit button and text field for user to iput initials
   submitBtn.setAttribute("type", "submit");
   submitBtn.setAttribute("value", "Submit");
+  submitBtn.setAttribute("id", "submit");
   // form.setAttribute("style", "padding: 5px")
   type.setAttribute("id", "initials")
   type.setAttribute("type", "text");
@@ -143,9 +155,10 @@ function finish(){
   form.appendChild(submitBtn);
   
 
-  numberField.textContent= `You got ${correct}/3 correct. Congraguations!`;
+  numberField.textContent= `You got ${correct}/5 correct. Congraguations!`;
   questionField.textContent = "Please enter your initials"
 
+  timeElement.style.display = "none"
   submitBtn.addEventListener("click", submitScore)
 
 }
@@ -184,6 +197,8 @@ function showHighScore(){
   viewScores.innerHTML = ""
   optionsField.innerHTML = ""
   scoreList.innerHTML = ""
+  optionsList.innerHTML = ""
+  timeElement.style.display = "none"
 
   //Create Back button
   buttonDiv.innerHTML = ""
@@ -209,7 +224,6 @@ function showHighScore(){
   resetBtn.addEventListener("click", function(){
     leaderBoard = []
     localStorage.setItem("highScores", JSON.stringify(leaderBoard));
-    console.log(leaderBoard)
     showHighScore()
   })
 
@@ -218,29 +232,18 @@ function showHighScore(){
   title.textContent = ("Player ----  Score")
   scoreList.appendChild(title)
 
-  //Orders my leaderBoard array from highest score to lowest. This is an arrow function
+  //Orders my leaderBoard array from highest score to lowest.
   leaderBoard.sort((a, b) => (a.score < b.score) ? 1: -1)
-  // leaderBoard.sort(function(a,b){
-  //   (a.score > b.score) ? 1: -1
-  // })
-  console.log(leaderBoard)
 
   leaderBoard.forEach(function(score, i){
     let liTag = document.createElement("li");
     let pTag = document.createElement("p");
+    pTag.setAttribute("class", "score")
     scoreList.appendChild(liTag)
     liTag.appendChild(pTag)
     pTag.textContent = `${leaderBoard[i]["name"]} ------ ${leaderBoard[i]["score"]}`
   })
 }
-
-
-//Color on ul will cascade down
-
-  // leaderBoard.sort(function(object1, object2){
-  //   (a.score > b.score) ? 1 : -1
-  // })
-  // list.sort((a, b) => (a.color > b.color) ? 1 : -1)
 
 
 
