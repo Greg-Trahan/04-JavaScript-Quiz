@@ -213,21 +213,25 @@ function showHighScore(){
     showHighScore()
   })
 
-    //Display high scores
-    let title = document.createElement("p")
-    title.textContent = ("Player ----  Score")
-    scoreList.appendChild(title)
-    
-    leaderBoard.forEach(function(score, i){
-      let liTag = document.createElement("li");
-      let pTag = document.createElement("p");
-      scoreList.appendChild(liTag)
-      liTag.appendChild(pTag)
-      pTag.textContent = `${leaderBoard[i]}, ${i}`
-    })
+  //Display high scores
+  let title = document.createElement("p")
+  title.textContent = ("Player ----  Score")
+  scoreList.appendChild(title)
 
-    console.log(leaderBoard)
-    console.log(leaderBoard.name)
+  //Orders my leaderBoard array from highest score to lowest. This is an arrow function
+  leaderBoard.sort((a, b) => (a.score < b.score) ? 1: -1)
+  // leaderBoard.sort(function(a,b){
+  //   (a.score > b.score) ? 1: -1
+  // })
+  console.log(leaderBoard)
+
+  leaderBoard.forEach(function(score, i){
+    let liTag = document.createElement("li");
+    let pTag = document.createElement("p");
+    scoreList.appendChild(liTag)
+    liTag.appendChild(pTag)
+    pTag.textContent = `${leaderBoard[i]["name"]} ------ ${leaderBoard[i]["score"]}`
+  })
 }
 
 
@@ -237,3 +241,6 @@ function showHighScore(){
   //   (a.score > b.score) ? 1 : -1
   // })
   // list.sort((a, b) => (a.color > b.color) ? 1 : -1)
+
+
+
