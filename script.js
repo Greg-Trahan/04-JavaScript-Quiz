@@ -153,6 +153,7 @@ function finish(){
 //Pull scores from local storage, add new score and restore new scores
 function submitScore(event){
   event.preventDefault();
+
   let score = {};
   let initialField = document.querySelector("#initials").value;
   score = {name: initialField, score: correct};
@@ -170,53 +171,63 @@ function submitScore(event){
 
 
 //Pull up an ordered list of the high scores
-function showHighScore(leaderBoard){
+function showHighScore(){
+  //Parse local storage
   leaderBoard = JSON.parse(localStorage.getItem("highScores"));
   if (leaderBoard === null){
     leaderBoard = []
   }
-
-  console.log(leaderBoard)
 
   //Clear previous content
   numberField.textContent = "High Scores"
   questionField.innerHTML = ""
   viewScores.innerHTML = ""
   optionsField.innerHTML = ""
+  scoreList.innerHTML = ""
 
-  //Recreate Start Button --- This is a mess. I know this is a mess. It's because earlier I was trying to do everything with the HTML elements I already had instead of just making new ones for all of my new things I wanted to appear.
+  //Create Back button
   buttonDiv.innerHTML = ""
-  generateBtn.setAttribute("id", "start");
-  generateBtn.setAttribute("class", "btn");
-  generateBtn.textContent = "Play again?";
-  buttonDiv.appendChild(generateBtn);
+  const backBtn = document.createElement("button");
+  backBtn.setAttribute("id", "start");
+  backBtn.setAttribute("class", "btn");
+  backBtn.textContent = "Go back";
+  buttonDiv.appendChild(backBtn);
 
-  console.log(leaderBoard.name)
-
-  //Create Start Button
+  //Create Reset Button
   const resetBtn = document.createElement("button");
   resetBtn.setAttribute("id", "reset");
   resetBtn.setAttribute("class", "btn");
   resetBtn.textContent = "Reset High Scores";
   buttonDiv.appendChild(resetBtn);
 
-  //Display high scores
-  leaderBoard.forEach(function(score, i){
-    let liTag = document.createElement("li");
-    let pTag = document.createElement("p");
-    scoreList.appendChild(liTag)
-    liTag.appendChild(pTag)
-    pTag.textContent = `${leaderBoard[i]}, ${i}`
+  //Back button functionality
+  backBtn.addEventListener("click", function(){
+    location.reload()
   })
 
-
-  
-  //Reset button
+  //Reset button functionality
   resetBtn.addEventListener("click", function(){
-    console.log(leaderBoard)
     leaderBoard = []
     localStorage.setItem("highScores", JSON.stringify(leaderBoard));
+    console.log(leaderBoard)
+    showHighScore()
   })
+
+    //Display high scores
+    let title = document.createElement("p")
+    title.textContent = ("Player ----  Score")
+    scoreList.appendChild(title)
+    
+    leaderBoard.forEach(function(score, i){
+      let liTag = document.createElement("li");
+      let pTag = document.createElement("p");
+      scoreList.appendChild(liTag)
+      liTag.appendChild(pTag)
+      pTag.textContent = `${leaderBoard[i]}, ${i}`
+    })
+
+    console.log(leaderBoard)
+    console.log(leaderBoard.name)
 }
 
 

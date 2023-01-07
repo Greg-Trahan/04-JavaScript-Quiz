@@ -28,7 +28,12 @@ main h1{
 }
 
 ul{
+  text-align: left;
   padding-left: 30%;
+}
+
+#score-list p{
+  font-weight: bold;
 }
 
 ul li{
